@@ -25,7 +25,7 @@ export const Navbar = () => {
   }
 
 
-  const userName = "user" // TODO: Reemplazar con el nombre real del usuario obtenido de /api/profile
+  const userName = "user" || "admin"// TODO: Reemplazar con el nombre real del usuario obtenido de /api/profile
 
   const navigate = useNavigate();
   //Implementar función handleLogout con POST a /api/logout usando credentials: 'include'
