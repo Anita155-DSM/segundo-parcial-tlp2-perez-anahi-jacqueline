@@ -47,7 +47,7 @@ export const LoginPage = () => {
       const data = await peticion(data.message)
       alert(data.message)
 
-      navigate("/login")
+      navigate("/home")
     } catch (error) {
       console.error(error);
       setError(error.message);
@@ -68,6 +68,7 @@ export const LoginPage = () => {
         </h2>
 
         {/* TODO: Mostrar este div cuando haya error */}
+        
         <div className="hidden bg-red-100 text-red-700 p-3 rounded mb-4">
           <p className="text-sm">
             Credenciales incorrectas. Intenta nuevamente.

@@ -1,5 +1,5 @@
 import { React} from "react";
-import { useNavigate } from "react-router";
+import { data, useNavigate } from "react-router";
 
 
 export const Navbar = () => {
@@ -17,9 +17,6 @@ export const Navbar = () => {
       }
 
       const data = await profileRes.json();
-
-      onLogin(data.user);
-
       navigate('/home');
 
     } catch (error) {
@@ -28,7 +25,7 @@ export const Navbar = () => {
   }
 
 
-  const userName = "Usuario"; // TODO: Reemplazar con el nombre real del usuario obtenido de /api/profile
+  const userName = "user" // TODO: Reemplazar con el nombre real del usuario obtenido de /api/profile
 
   const navigate = useNavigate();
   //Implementar función handleLogout con POST a /api/logout usando credentials: 'include'
@@ -43,7 +40,6 @@ export const Navbar = () => {
       if (!peticion.ok) {  //si la peticion no es ok, da un console.log o sea un mensaje de error
         console.log("error en el fetch")
       }//sino, redirigue a login
-      const data = await peticion(data.message)
       navigate("/login")
 
       console.log(peticion) //esto para ver como se maneja en este punto
