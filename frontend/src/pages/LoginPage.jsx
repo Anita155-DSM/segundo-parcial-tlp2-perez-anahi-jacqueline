@@ -1,9 +1,41 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useForm } from "../hooks/useForm";
+
 
 export const LoginPage = () => {
-  // TODO: Integrar lógica de autenticación aquí
-  // TODO: Implementar useForm para el manejo del formulario
-  // TODO: Implementar función handleSubmit
+  const { formState, handleChange } = useForm({
+    username: "",
+    password: "",
+  });
+
+  const navigate = useNavigate();
+
+  // TODO: Integrar lógica de autenticación aquí. LISTO
+  // TODO: Implementar useForm para el manejo del formulario. ESTO LISTO TAMBIEN
+  // TODO: Implementar función handleSubmit. ESTO SEMILISTO CREO
+  //   Usar custom hook useForm para manejar el estado del formulario (campos: username,
+  // password)
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
+    const peticion = await fetch("http://localhost:3000/api/login", {
+      method: "POST",
+      body: JSON.stringify(formState),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    const data = await peticion.json();
+
+    if (!peticion.ok) {
+      return alert(data.message);
+    }
+
+    alert(data.message);
+    navigate("/home");
+  };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-8">
@@ -20,7 +52,7 @@ export const LoginPage = () => {
           </p>
         </div>
 
-        <form onSubmit={(event) => {}}>
+        <form onSubmit={(event) => { handleLogin }}>
           <div className="mb-4">
             <label
               htmlFor="username"
@@ -33,6 +65,7 @@ export const LoginPage = () => {
               id="username"
               name="username"
               placeholder="Ingresa tu usuario"
+              onChange={handleChange}
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
@@ -50,6 +83,7 @@ export const LoginPage = () => {
               id="password"
               name="password"
               placeholder="Ingresa tu contraseña"
+              onChange={handleChange}
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />

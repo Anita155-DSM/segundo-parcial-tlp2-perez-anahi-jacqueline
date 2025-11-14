@@ -1,10 +1,23 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export const RegisterPage = () => {
   // TODO: Integrar lógica de registro aquí
   // TODO: Implementar useForm para el manejo del formulario
   // TODO: Implementar función handleSubmit
 
+  //   Usar custom hook useForm para manejar el estado (campos: username, email,
+  // password, name, lastname)
+  const { formState, handleChange } = useForm({
+    username: "",
+    password: "",
+    email: "",
+    name: "",
+    lastname: ""
+  });
+  
+
+  const navigate = useNavigate()
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-8">
       <div className="max-w-lg w-full bg-white rounded-lg shadow-xl p-8">
@@ -19,7 +32,7 @@ export const RegisterPage = () => {
           </p>
         </div>
 
-        <form onSubmit={(event) => {}}>
+        <form onSubmit={(event) => { }}>
           <div className="mb-4">
             <label
               htmlFor="username"
