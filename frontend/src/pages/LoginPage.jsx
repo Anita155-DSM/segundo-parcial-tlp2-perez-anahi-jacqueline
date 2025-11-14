@@ -1,5 +1,12 @@
 import { Link, useNavigate } from "react-router";
 import { useForm } from "../hooks/useForm";
+import { useState } from "react";
+import { Loading } from "../components/Loading";
+// TODO: Integrar lógica de autenticación aquí. LISTO
+// TODO: Implementar useForm para el manejo del formulario. ESTO LISTO TAMBIEN
+// TODO: Implementar función handleSubmit. ESTO SEMILISTO CREO
+//   Usar custom hook useForm para manejar el estado del formulario (campos: username,
+// password)
 
 
 export const LoginPage = () => {
@@ -10,32 +17,47 @@ export const LoginPage = () => {
 
   const navigate = useNavigate();
 
-  // TODO: Integrar lógica de autenticación aquí. LISTO
-  // TODO: Implementar useForm para el manejo del formulario. ESTO LISTO TAMBIEN
-  // TODO: Implementar función handleSubmit. ESTO SEMILISTO CREO
-  //   Usar custom hook useForm para manejar el estado del formulario (campos: username,
-  // password)
-  const handleLogin = async (event) => {
-    event.preventDefault();
 
-    const peticion = await fetch("http://localhost:3000/api/login", {
-      method: "POST",
-      body: JSON.stringify(formState),
-      headers: {
-        "Content-type": "application/json",
-      },
-    });
+  // estp es para el estado, para manejar loading y asi tambien poder manjear errores
+  const [isLoading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-    const data = await peticion.json();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
 
-    if (!peticion.ok) {
-      return alert(data.message);
+    if (!formState.username || !formState.password) {
+      setError("Todos los campos son obligatorios");
+      return;
     }
 
-    alert(data.message);
-    navigate("/home");
+    setLoading(true);
+    try {
+      const peticion = await fetch("http://localhost:3000/api/login", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(formState)
+      });
+
+      if (!peticion.ok) {
+        console.log("Error al iniciar sesión");
+        console.log(formState)
+      }
+      const data = await peticion(data.message)
+      alert(data.message)
+
+      navigate("/login")
+    } catch (error) {
+      console.error(error);
+      setError(error.message);
+      setLoading(false);
+    }
   };
 
+  // if (isLoading) {
+  //   return <Loading />;
+  // }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-8">
@@ -52,7 +74,7 @@ export const LoginPage = () => {
           </p>
         </div>
 
-        <form onSubmit={(event) => { handleLogin }}>
+        <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
               htmlFor="username"

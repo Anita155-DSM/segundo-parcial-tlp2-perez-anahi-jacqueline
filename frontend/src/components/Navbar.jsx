@@ -1,4 +1,5 @@
-import { React, useNavigate } from "react";
+import { React} from "react";
+import { useNavigate } from "react-router";
 
 
 export const Navbar = () => {
@@ -9,15 +10,15 @@ export const Navbar = () => {
   const handleProfile = async (event) => {
     try {
       const profileRes = await fetch("http://localhost:3000/api/profile", {
-        credentials: "include"
-      })
-      if (!profileResponse.ok) {
-        throw new Error("Login exitoso, pero no se pudo obtener el perfil.");
+        credentials: "include",
+      });
+      if (!profileRes.ok) {
+        console.log("Login exitoso, pero no se pudo obtener el perfil.");
       }
 
-      const profileData = await profileRes.json();
+      const data = await profileRes.json();
 
-      onLogin(profileData.user);
+      onLogin(data.user);
 
       navigate('/home');
 
@@ -25,6 +26,8 @@ export const Navbar = () => {
       console.log(error)
     }
   }
+
+
   const userName = "Usuario"; // TODO: Reemplazar con el nombre real del usuario obtenido de /api/profile
 
   const navigate = useNavigate();
@@ -61,10 +64,9 @@ export const Navbar = () => {
           </span>
 
           <button
-            onClick={() => {
-              handleLogout
+            onClick={
+              handleLogout}
               // TODO: Implementar handleLogout aquí
-            }}
             className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded transition-colors font-medium"
           >
             Cerrar Sesión
